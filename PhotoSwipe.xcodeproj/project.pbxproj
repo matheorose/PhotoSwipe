@@ -27,6 +27,7 @@
 		4F9A65642D3B07AF0067B389 /* PhotoSwipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoSwipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F9A65742D3B07B10067B389 /* PhotoSwipeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoSwipeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F9A657E2D3B07B10067B389 /* PhotoSwipeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoSwipeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FB914112D41480D007AA5DC /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -79,6 +80,7 @@
 				4F9A65772D3B07B10067B389 /* PhotoSwipeTests */,
 				4F9A65812D3B07B10067B389 /* PhotoSwipeUITests */,
 				4F9A65652D3B07AF0067B389 /* Products */,
+				4FB914112D41480D007AA5DC /* Untitled.swift */,
 			);
 			sourceTree = "<group>";
 		};

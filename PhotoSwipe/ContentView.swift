@@ -11,38 +11,38 @@ struct ContentView: View {
     var body: some View {
         NavigationStack{
             ZStack{
-                Color.black
-                    .edgesIgnoringSafeArea(.all)
-                
+                BackgroundViewRepresentable()
+                    .ignoresSafeArea()
                 VStack(spacing: 20){
                     
                     Spacer()
                     Spacer()
-                    Spacer()
                     
-                    HStack(spacing: 15){
-                        Image(.galerie)
-                            .renderingMode(.original)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 70, height: 70)
-                            .cornerRadius(12)
-                        Text("PhotoSwipe")
-                            .font(.title).bold()
-                            .foregroundStyle(.white)
-                    }
+                
+                    Image(.galerie)
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(12)
+                        .shadow(radius: 10)
+                    Text("PhotoSwipe")
+                        .font(.system(size: 50)).bold()
+                        .foregroundStyle(.white)
+                        .shadow(radius: 10)
+                
                     
                     Spacer()
                     
                     NavigationLink(destination: Swipe()) {
-                        Text("Start to swipe")
-                            .frame(width: 150, height: 50)
+                        Text("Start to Swipe")
+                            .frame(width: 280, height: 60)
                             .background(.white)
                             .cornerRadius(12)
-                            .font(.title3).bold()
+                            .font(.title2).bold()
                             .foregroundStyle(.black)
+                            .shadow(radius: 10)
                     }
-                    Spacer()
                     Spacer()
                     Spacer()
                 }

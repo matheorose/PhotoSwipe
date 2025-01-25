@@ -10,6 +10,7 @@ struct Swipe: View {
     @State private var isAccessDenied = false
     @State private var currentAsset: PHAsset? = nil
     @State private var showConfirmationVue = false
+    @State private var imageOffset: CGFloat = 0
     
     var body: some View {
         NavigationStack {
@@ -29,7 +30,7 @@ struct Swipe: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 30, height: 30)
                                 .foregroundStyle(.white)
-                                .padding(.trailing, 10)
+                                .padding(.trailing, 25)
                         }
                     }
                     
@@ -42,18 +43,36 @@ struct Swipe: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .background(Color.black)
                             .ignoresSafeArea()
+                            .offset(x: imageOffset)
                             .gesture(
                                 DragGesture()
                                     .onChanged { value in
+                                        imageOffset = value.translation.width
                                     }
                                     .onEnded { value in
-                                        if value.translation.width < 0 {
-                                            if let asset = currentAsset {
-                                                photosToDelete.append(asset)
+                                        if value.translation.width < -100 {
+                                            withAnimation(.easeOut(duration: 0.4)) {
+                                                imageOffset = -UIScreen.main.bounds.width
                                             }
-                                            loadRandomImage()
-                                        } else if value.translation.width > 0 {
-                                            loadRandomImage()
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                if let asset = currentAsset {
+                                                    photosToDelete.append(asset)
+                                                }
+                                                imageOffset = 0
+                                                loadRandomImage()
+                                            }
+                                        } else if value.translation.width > 100 {
+                                            withAnimation(.easeOut(duration: 0.4)) {
+                                                imageOffset = UIScreen.main.bounds.width
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                imageOffset = 0
+                                                loadRandomImage()
+                                            }
+                                        } else {
+                                            withAnimation {
+                                                imageOffset = 0
+                                            }
                                         }
                                     }
                             )
@@ -69,14 +88,49 @@ struct Swipe: View {
                     
                     Spacer()
                     
-                    Button("Terminer"){
-                        showConfirmationVue = true
+                    
+                    HStack(spacing: 50){
+                        Image(systemName: "trash.circle.fill")
+                            .font(.system(size: 50))
+                            .foregroundColor(Color(red: 236/255, green: 112/255, blue: 99/255))
+                            .onTapGesture {
+                                withAnimation(.easeOut(duration: 0.4)) {
+                                    imageOffset = -UIScreen.main.bounds.width
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    if let asset = currentAsset {
+                                        photosToDelete.append(asset)
+                                    }
+                                    imageOffset = 0
+                                    loadRandomImage()
+                                }
+                            }
+
+                        
+                        Button("Terminer"){
+                            showConfirmationVue = true
+                        }
+                        .font(.headline)
+                        .foregroundColor(.black)
+                        .padding()
+                        .background(.white)
+                        .cornerRadius(10)
+                        
+                        Image(systemName: "arrowtriangle.right.circle.fill")
+                            .font(.system(size: 50))
+                            .foregroundColor(Color(red: 130/255, green:224/255, blue: 170/255))
+                            .onTapGesture {
+                                withAnimation(.easeOut(duration: 0.4)) {
+                                    imageOffset = UIScreen.main.bounds.width
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    imageOffset = 0
+                                    loadRandomImage()
+                                }
+                            }
                     }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                    .padding(.top, 20)
+                    .padding(.bottom, 20)
                 }
             }
         }
@@ -157,6 +211,8 @@ struct ConfirmationView: View {
     @Binding var photosToDelete: [PHAsset]
     @Environment(\.dismiss) var dismiss
     
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
+    
     var body: some View {
         VStack{
             Text("Photos à supprimer")
@@ -164,9 +220,12 @@ struct ConfirmationView: View {
                 .padding()
             
             ScrollView{
-                ForEach(photosToDelete, id: \.self){ asset in
-                    AssetThumbnailView(asset: asset)
+                LazyVGrid(columns: columns, spacing: 10){
+                    ForEach(photosToDelete, id: \.self){ asset in
+                        AssetThumbnailView(asset: asset)
+                    }
                 }
+                .padding(.horizontal)
             }
             
             Button("Confirmer la suppression") {

@@ -1,18 +1,10 @@
-//
-//  BackgroundViewRepresentable.swift
-//  PhotoSwipe
-//
-//  Created by matheo rose on 22/01/2025.
-//
-
 import SwiftUI
 
-struct BackgroundViewRepresentable: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct BackgroundViewRepresentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> BackgroundView {
+        return BackgroundView()
     }
-}
-
-#Preview {
-    BackgroundViewRepresentable()
+    
+    func updateUIViewController(_ uiViewController: BackgroundView, context: Context) {
+    }
 }
